@@ -1,0 +1,112 @@
+library(mdhglm)
+library(Matrix)
+library(boot)
+library(mvtnorm)
+data("Orthodont")
+require(ggplot2)
+library(ggplot2) 
+library(gtable)
+library(scales)
+library(Rcpp)
+library(munsell)
+library(colorspace)
+library(digest)
+library(lazyeval)
+library(tibble)
+library(pillar)
+library(crayon)
+library(vctrs)
+library(zeallot)
+library(pkgconfig)
+library(methods)     
+library(labeling)
+oplot<- ggplot(data = Orthodont, aes(x = age, y = distance, group = Subject,colour=Sex))
+oplot+geom_line()+geom_point()
+install.packages("lme4",
+                 repos=c("http://lme4.r-forge.r-project.org/repos",
+                         getOption("repos")[["CRAN"]]))
+library(lme4)
+o1 <- lmer(distance ~ Sex + age :Sex+ (1|Subject), data = Orthodont,REML="TRUE") 
+conf(o1)
+anova(o1)
+o2<-lmer(distance~ age:Sex+(-1+age|Subject), data=Orthodont)
+summary(o1)
+anova(o3,o1)
+dt(12.64,55.4)
+pt(-2.40,64.2)
+anova(Model.REML)
+m4<-lmer(distance ~ Sex+age:Sex + (1|Subject), data = Orthodont) 
+summary(m4)
+01
+o3<-lmer(distance ~ Sex + age:Sex + (1+age|Subject) , data=Orthodont,REML="TRUE")
+summary(o3)
+o2 <- lmer(distance ~ Sex + age:Sex + (age|Subject) , data=Orthodont) 
+summary(o2)
+anova(o2,o1)
+anova(o1,o2)
+o2
+i3<-data.frame(
+  Exam_mark=c(1,1,2,3,3,4,4,5,7,8),
+  Grade=c(1,3,0,1,4,2,5,4,6,5),
+  Subject=c(1,2,1,2,3,3,4,4,5,5)
+)
+
+i3plot<-ggplot(data = i3, aes(x=Grade,y=Exam_mark, group = Subject))
+i3plot+geom_point()+geom_line()
+
+library(dplyr)
+o33 <- filter(psid, person <= )
+ggplot(Orthodont, aes(x=age, y=distance))+geom_line()+facet_wrap(~ Subject)
+anova(m4)
+confint(m4)
+summary(o3)
+r1<- lmer(distance ~ age +Sex +(1|Subject), REML="FALSE", data = Orthodont) 
+r2<-lmer(distance ~ age +Sex + (1|Subject), REML="TRUE", data = Orthodont) 
+summary(r1)
+summary(r2)
+r3<- lmer(distance ~ Sex +(1|Subject), REML="FALSE", data = Orthodont)
+r4<- lmer(distance ~ age +Sex +(1|Subject), REML="FALSE", data = Orthodont)
+r5<- lmer(distance ~ age +(1|Subject), REML="FALSE", data = Orthodont)
+summary(r3)
+summary(r4)
+anova(r3,o1)
+anova(r4,r5)
+a111<-lmer(distance~1+(1|Subject),data=Orthodont)
+n11 <- numeric(1000)
+for(i in 1:1000){
+  ryield <- unlist(simulate(r3))
+  r3r<- lmer(ryield ~ Sex +(1|Subject), data = Orthodont)
+  o1r <- lmer(ryield ~ age :Sex+ (1|Subject), data = Orthodont) 
+  n11 [i] <- 2*(logLik(r3r) - logLik(o1r))
+} 
+plot(qchisq((1:1000)/1001,1),sort(n11),xlab=Expression(chi[1]^2),ylab="Simulated LRT") )
+abline(0,1)
+asas<-lm(distance ~ age :Sex, data = Orthodont)
+b11 <- numeric(1000)
+ for(i in 1:1000){
+  rryield<- unlist(simulate(asas))
+  asasr <- lm( rryield ~ age :Sex, data = Orthodont)
+  rmodr <- lmer(rryield ~ age:Sex + (1|Subject), REML="TRUE",data=Orthodont)
+  b11 [i] <- 2*(logLik(asasr) - logLik(rmodr))
+} 
+plot(qchisq((1:1000)/1001,1),sort(b11)) )
+abline(0,1)
+
+plot(fitted(o1),resid(o1),xlab="Fitted",ylab="Residuals")
+qqnorm(resid(o1),main="") 
+abline(0,0)
+Orthodont$pred.final <- fitted(o1)
+ggplot(data=Orthodont) + geom_point(aes(x=age,y=distance), color="red", size=3) + 
+  geom_line(aes(x=age,y=pred.final)) + facet_wrap(~Subject, ncol=5) 
+
+confint(o1)
+d = dotplot(ranef(o1, condVar=TRUE), strip=FALSE)
+print(d[[1]])
+library(lattice)
+pt(0.67,1)
+
+summary(o3)
+
+
+
+
